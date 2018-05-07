@@ -13,20 +13,6 @@ Naze.on("ready", () => {
     console.log("On and ready");
 });
 
-//Autoresponder
-Naze.on("message", (msg) => {
-if (msg.author.bot) return;
-if (msg.channel.type === "dm") return;
-
-if (cooldown.has(msg.author.id)) {
-    return;
-  }
-
-  cooldown.add(msg.author.id);
-  setTimeout(() => {
-    cooldown.delete(msg.author.id);
-  }, 1500)
-
   //Autoresponder
     if (msg.content.toLowerCase() == "blue") {
         msg.channel.send("Is a noob, lmao.") 
@@ -64,7 +50,7 @@ if (cooldown.has(msg.author.id)) {
     
     //Swear Word Command
     } else if (swearWords.some(word => msg.content.includes(word)) ) {
-        msg.reply("Woah fella, watch the language!");
+        msg.reply(" watch your language fella!");
         msg.delete();
 
 //Avatar Command
@@ -80,11 +66,11 @@ if (cooldown.has(msg.author.id)) {
 //Kick Command
 } else if(msg.content.toLowerCase().startsWith(prefix+ `kick`)) {
     if (!msg.member.hasPermission("KICK_MEMBERS")) {
-    msg.reply(":x: | You don't have the permissions to perform this task!");
+    msg.reply(" ,you don't have the permissions to perform this task!");
     return;
     }
     if(msg.mentions.members.size <1) {
-        msg.reply(":mag: | Ping someone in order to kick a user, silly!");
+        msg.reply(", ping someone in order to kick a user, silly!");
         return;
     }
     let args = msg.content.split(" ").splice(2);
@@ -103,11 +89,11 @@ if (cooldown.has(msg.author.id)) {
     //Ban Command
     } else if(msg.content.toLowerCase().startsWith(prefix+ `ban`)) {
         if (!msg.member.hasPermission("BAN_MEMBERS")) {
-            msg.reply(":x: | You don't have the permission to perform this task!");
+            msg.reply(", you don't have the permission to perform this task!");
             return;
         }
             if(msg.mentions.members.size <1) {
-                msg.reply(":mag: | Ping someone in order to ban a user, silly!");
+                msg.reply(", ping someone in order to ban a user, silly!");
                 return;
             }
             let args = msg.content.split(" ").splice(2);
@@ -127,7 +113,7 @@ if (cooldown.has(msg.author.id)) {
    //Purge Command              
 } else if (msg.content.toLowerCase().startsWith(prefix+`purge`)) {
     if (!msg.member.hasPermission("MANAGE_MESSAGES")) {
-        msg.reply(":x: | You don't have permissions to perform this task!"); //If someone doesn't have perms, won't delete messages and sends this reponse.
+        msg.reply(", you don't have permissions to perform this task!"); //If someone doesn't have perms, won't delete messages and sends this reponse.
         return;
     }
     let args = msg.content.split(" ").splice(1);
@@ -135,11 +121,11 @@ if (cooldown.has(msg.author.id)) {
     
     let purgeThis = args.join(" ");
     if (isNaN(purgeThis)) {
-        msg.reply("Enter an amount to delete."); //Has them enter a number
+        msg.reply(", enter an amount to delete."); //Has them enter a number
         return;
     }
     if (purgeThis > 500) {
-        msg.channel.reply(":x: | Too many messages! Max is 100 messages.");
+        msg.channel.reply(", too many messages! Max is 100 messages.");
         return;
     }
     msg.delete();
@@ -149,7 +135,7 @@ if (cooldown.has(msg.author.id)) {
 //Advertising Command
 else if (msg.content.toLowerCase().includes('discord.gg/')||msg.content.toLowerCase().includes('discord.me/')||msg.content.toLowerCase().includes('discord.io/')||msg.content.toLowerCase().includes('discordapp.com/invite')){
 if (!msg.member.hasPermission("MENTION_EVERYONE")) {
-msg.reply(`:x: | No advertising`);
+msg.reply(`no advertising`);
 msg.delete();
 }
 
@@ -161,16 +147,16 @@ msg.delete();
     let tomute = msg.mentions.members.first();
   if(!tomute) return msg.reply("couldn't find user.");
     if (!msg.member.hasPermission("MUTE_MEMBERS")) {
-        msg.reply(":x: | You don't have the permissions to perform this task!"
+        msg.reply(", you don't have the permissions to perform this task!"
         );
         return;
     }
     
     let muteThisShit = msg.mentions.members.first();
     if (!muteThisShit) {
-        msg.reply(":mag: | Ping a user to mute!");
+        msg.reply(", p a user to mute!");
     } else if (muteThisShit.hasPermission('MANAGE_MESSAGES')) {
-        msg.reply(":x: | Can't mute this user.");
+        msg.reply(", can't mute this user.");
     }
 
     let roleForMuting = msg.guild.roles.find('name', 'Muted');
@@ -215,7 +201,6 @@ msg.delete();
 } else if (msg.content.toLowerCase().startsWith(prefix+"8ball")) {
 
 let replies = ["Yes", "No", "Ask again later", "It is certain.", "It is decidedly so", "Without a doubt", "Yes definitely", "You may rely on it", "Most likely", "Reply hazy try again", "Better not tell you now", "My sources say no", "Very doubtful"];
-
 let result = replies[Math.floor(Math.random() * replies.length)];
 
 let question = msg.content.split(' ').splice(1);
@@ -230,6 +215,23 @@ let bEmbed = new Discord.RichEmbed()
 
 msg.channel.send(bEmbed);
 
+//Rate Command
+} else if (msg.content.toLowerCase().startsWith(prefix+"rate")) {
+     let replies = ["1", "2", "3" , "4", "5", "6", "7", "8", "9", "10"];
+     let result = replies[Math.floor(Math.random() * replies.length)];
+
+     let question = msg.content.split(' ').splice(1);
+     question = question.join(' ');
+     if (!question) return msg.reply("Ask a full question.");
+
+     let rEmbed = new Discord.RichEmbed()
+     .setAuthor(msg.author.tag)
+     .setColor("RANDOM")
+     .addField("Item to be rated:", question)
+     .addField("Answer", result);
+     
+     msg.channel.send(rEmbed);
+
 //Help Command
 }
 else if (msg.content.toLowerCase() == prefix+"help") {
@@ -239,9 +241,9 @@ else if (msg.content.toLowerCase() == prefix+"help") {
     .setURL("https://discordapp.com/api/oauth2/authorize?client_id=414093704865775626&permissions=0&scope=bot")
     .setDescription("Donate here: https://www.paypal.me/GabbyStars")
     .setColor('RANDOM')
-    .addField("Mod Utilities" , "Ban, Kick, Mute, Purge", true)
-    .addField("Info" , "ServerInfo, Membercount, Avatar", true)
-    .addField("Fun Commands!", "8ball", true)
+    .addField("Mod Utilities" , "`Ban`, `Kick`, `Mute`, `Purge`", true)
+    .addField("Info" , "`ServerInfo`, `Membercount`,` Avatar`", true)
+    .addField("Fun Commands!", "`8ball`, `Rate`", true)
     .setTimestamp()
     .setFooter("DM Gabby#9995 for any suggestions you may have!")
     msg.channel.send(hEmbed);
@@ -262,16 +264,22 @@ else if (msg.content.toLowerCase() == prefix+"help") {
         }
     }
  });
- Naze.on('guildMemberAdd', member => {
-    const channel = member.guild.channels.find('name', 'welcome');
-    if (!channel) return;
-    channel.send(`Welcome to the server, ${member}`);
- 
-var tRole = member.guild.roles.find('name', 'Twitch');
-var pRole = member.guild.roles.find('name', 'PartnerPing')
-member.addRole(tRole)
-member.addRole(pRole)
-});
+ Naze.on("guildMemberAdd", member => {
+    const channel = member.guild.channels.find("name", "welcome");
+    if(!channel) return undefined;
+
+    let guild = member.guild.name;
+    let memberAvatar = member.user.avatarURL;
+
+    let wEmbed = new Discord.RichEmbed()
+    .setColor("RANDOM")
+    .setThumbnail(memberAvatar)
+    .addField(`** **`, `Welcome to the Server, ${member.displayName}`)
+    .addField(`** **`, `Member count: ${member.guild.memberCount}.`)
+    .addField(`Account Made:`, `${member.createdAt}`)
+    .setTimestamp()
+    channel.send(wEmbed);
+ });
 
 
 Naze.on('guildMemberRemove', member => {
