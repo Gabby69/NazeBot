@@ -13,6 +13,20 @@ Naze.on("ready", () => {
     console.log("On and ready");
 });
 
+//Autoresponder
+Naze.on("message", (msg) => {
+if (msg.author.bot) return;
+if (msg.channel.type === "dm") return;
+
+if (cooldown.has(msg.author.id)) {
+    return;
+  }
+
+  cooldown.add(msg.author.id);
+  setTimeout(() => {
+    cooldown.delete(msg.author.id);
+  }, 1500)
+
   //Autoresponder
     if (msg.content.toLowerCase() == "blue") {
         msg.channel.send("Is a noob, lmao.") 
@@ -189,6 +203,20 @@ msg.delete();
     .addField("Member Count" , msg.guild.memberCount);
     msg.channel.send(serverEmbed);
 
+    //User Info Command
+} else if (msg.content.toLowerCase().startsWith(prefix+"userinfo")) {
+    let user = msg.mentions.users.first() || msg.author;
+    
+    let embed = new Discord.RichEmbed()
+    .setAuthor(msg.author.tag , user.displayAvatarURL)
+    .setColor('RANDOM')
+    .addField('ID', user.id, true)
+    .addField('Username', user.username, true)
+    .addField('Status', user.presence.status, true)
+    .setThumbnail(user.displayAvatarURL)
+    .setTimestamp()
+    msg.channel.send(embed);
+
 //Member-count command
 } else if (msg.content.toLowerCase().startsWith(prefix+"membercount")) {
     let mEmbed = new Discord.RichEmbed()
@@ -242,7 +270,7 @@ else if (msg.content.toLowerCase() == prefix+"help") {
     .setDescription("Donate here: https://www.paypal.me/GabbyStars")
     .setColor('RANDOM')
     .addField("Mod Utilities" , "`Ban`, `Kick`, `Mute`, `Purge`", true)
-    .addField("Info" , "`ServerInfo`, `Membercount`,` Avatar`", true)
+    .addField("Info" , "`ServerInfo`, `Membercount`,` Avatar`, `Userinfo`", true)
     .addField("Fun Commands!", "`8ball`, `Rate`", true)
     .setTimestamp()
     .setFooter("DM Gabby#9995 for any suggestions you may have!")
@@ -276,7 +304,6 @@ else if (msg.content.toLowerCase() == prefix+"help") {
     .setThumbnail(memberAvatar)
     .addField(`** **`, `Welcome to the Server, ${member.displayName}`)
     .addField(`** **`, `Member count: ${member.guild.memberCount}.`)
-    .addField(`Account Made:`, `${member.createdAt}`)
     .setTimestamp()
     channel.send(wEmbed);
  });
