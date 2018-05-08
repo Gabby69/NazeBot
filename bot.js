@@ -5,7 +5,7 @@ const Discord = require("discord.js");
 const Naze = new Discord.Client();
 
 const ms = require('ms');
-const swearWords = ["nigger", "nIgGer", "NIGGER", "n1gg3r", "nIGGer", "Nigger"];
+const swearWords = ["nigger", "nIgGer", "NIGGER", "n1gg3r", "nIGGer", "Nigger", "nigga"];
 
 Naze.login(process.env.BOT_TOKEN);
 Naze.on("ready", () => {Naze.user.setPresence({game: {name: "+help | Gabby.com", type: 2}}); });
@@ -292,7 +292,7 @@ else if (msg.content.toLowerCase() == prefix+"help") {
         }
     }
  });
- Naze.on("guildMemberAdd", member => {
+Naze.on("guildMemberAdd", member => {
     const channel = member.guild.channels.find("name", "welcome");
     if(!channel) return undefined;
 
@@ -307,6 +307,7 @@ else if (msg.content.toLowerCase() == prefix+"help") {
     .setTimestamp()
     channel.send(wEmbed);
  });
+
 
 
 Naze.on('guildMemberRemove', member => {
