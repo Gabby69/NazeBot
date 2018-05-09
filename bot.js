@@ -33,14 +33,7 @@ if (cooldown.has(msg.author.id)) {
 
 //Emote Responder
     } else if  (msg.content.toLowerCase().includes('gabby')) {
-        msg.react("🌹");
-        
-    }
-    else  if (msg.content.toLowerCase().includes('ainz')) {
-            msg.react("🍆");
-
-    } else  if (msg.content.toLowerCase().includes('novo')) {
-                msg.react("💩");
+        msg.react("🌹")) {
             
     //Bot Latency
 } else if (msg.content.toLowerCase() == prefix+"ping") {
@@ -210,8 +203,8 @@ msg.delete();
     let embed = new Discord.RichEmbed()
     .setAuthor(msg.author.tag , user.displayAvatarURL)
     .setColor('RANDOM')
-    .addField('ID', user.id, true)
     .addField('Username', user.username, true)
+    .addField('ID', user.id, true)
     .addField('Status', user.presence.status, true)
     .setThumbnail(user.displayAvatarURL)
     .setTimestamp()
