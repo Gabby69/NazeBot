@@ -7,7 +7,6 @@ const Naze = new Discord.Client();
 const ms = require('ms');
 const swearWords = ["nigger", "nIgGer", "NIGGER", "n1gg3r", "nIGGer", "Nigger", "nigga"];
 
-Naze.login(process.env.BOT_TOKEN);
 Naze.on("ready", () => {Naze.user.setPresence({game: {name: "+help | Gabby.com", type: 2}}); });
 Naze.on("ready", () => {
     console.log("On and ready");
