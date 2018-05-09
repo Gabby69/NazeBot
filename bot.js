@@ -196,7 +196,7 @@ msg.delete();
     .addField("Member Count" , msg.guild.memberCount);
     msg.channel.send(serverEmbed);
 
-    //User Info Command
+//User Info Command
 } else if (msg.content.toLowerCase().startsWith(prefix+"userinfo")) {
     let user = msg.mentions.users.first() || msg.author;
     
@@ -205,11 +205,12 @@ msg.delete();
     .setColor('RANDOM')
     .addField('Username', user.username, true)
     .addField('ID', user.id, true)
+    .addField('Created account', user.createdAt.toDateString(), true)
+    .addField("Joined guild", msg.member.joinedAt, true)
     .addField('Status', user.presence.status, true)
     .setThumbnail(user.displayAvatarURL)
-    .setTimestamp()
     msg.channel.send(embed);
-
+    
 //Member-count command
 } else if (msg.content.toLowerCase().startsWith(prefix+"membercount")) {
     let mEmbed = new Discord.RichEmbed()
@@ -285,7 +286,7 @@ else if (msg.content.toLowerCase() == prefix+"help") {
         }
     }
  });
-Naze.on("guildMemberAdd", member => {
+    Naze.on("guildMemberAdd", member => {
     const channel = member.guild.channels.find("name", "welcome");
     if(!channel) return undefined;
 
@@ -293,10 +294,11 @@ Naze.on("guildMemberAdd", member => {
     let memberAvatar = member.user.avatarURL;
 
     let wEmbed = new Discord.RichEmbed()
-    .setColor("RANDOM")
+    .setTitle("New member")
     .setThumbnail(memberAvatar)
+    .setColor("RANDOM")
     .addField(`** **`, `Welcome to the Server, ${member.displayName}`)
-    .addField(`** **`, `Member count: ${member.guild.memberCount}.`)
+    .addField('Created account', member.user.createdAt)
     .setTimestamp()
     channel.send(wEmbed);
  });
@@ -306,5 +308,5 @@ Naze.on("guildMemberAdd", member => {
 Naze.on('guildMemberRemove', member => {
     const channel = member.guild.channels.find('name','welcome');
     if (!channel) return;
-    channel.send(`${member}, left the server. Rip`);
+    channel.send(`${member.displayName}, left the server. Rip`);
 });
